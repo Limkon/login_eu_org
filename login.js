@@ -18,12 +18,12 @@ const puppeteer = require('puppeteer');
         await page.goto('https://nic.eu.org/arf/en/');
       
         // 等待页面加载完成
-        await page.waitForTimeout(5000); // 增加等待时间，等待页面加载完全
+        await page.waitForTimeout(8000); // 增加等待时间，等待页面加载完全
 
         // 清空Handle输入框的原有值-FREE
-        await page.evaluate(() => {
-          document.querySelector('#id_handle').value = '';
-        });
+        const handleInput = await page.$('#id_handle');
+        await handleInput.click({ clickCount: 3 }); // 选中输入框的内容
+        await handleInput.press('Backspace'); // 删除原有值
 
         // 输入实际的账号和密码
         await page.type('#id_handle', username);
