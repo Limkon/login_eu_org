@@ -15,40 +15,23 @@ const puppeteer = require('puppeteer');
       const page = await browser.newPage();
 
       try {
-        await page.goto('http://wwww.cq17.com:12345/index/Index/Userlogins.html');
+        await page.goto('https://nic.eu.org/arf/en/');
       
         // 等待页面加载完成
-        await page.waitForSelector('#content_name');
-        await page.waitForSelector('#content_password');
-        await page.waitForSelector('.content_button button');
+        await page.waitForSelector('#id_handle');
+        await page.waitForSelector('#id_password');
+        await page.waitForSelector('.action[type="submit"]');
       
         // 输入用户名和密码
-        await page.type('#content_name', username);
-        await page.type('#content_password', password);
+        await page.type('#id_handle', username);
+        await page.type('#id_password', password);
       
         // 提交登录表单
-        await page.click('.content_button button');
+        await page.click('.action[type="submit"]');
       
-        // 等待登录成功
+        // 等待登录成功（如果有跳转页面的话）
         await page.waitForNavigation();
-      
-        // 转到用户中心页面
-        await page.goto('http://wwww.cq17.com:12345/index/User/index.html');
-      
-        // 等待页面加载完成
-        await page.waitForSelector('.signinqd');
-      
-        // 点击红包领取
-        await page.click('.signinqd');
-      
-        // 在领取红包后执行其他操作...
-      
-        // 点击安全退出
-        await page.click('.quit a');
-      
-        // 等待安全退出完成
-        await page.waitForNavigation();
-      
+        
         console.log(`账号 ${username} 登录成功！`);
       } catch (error) {
         console.error(`账号 ${username} 登录时出现错误: ${error}`);
