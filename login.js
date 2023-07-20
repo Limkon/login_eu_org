@@ -18,11 +18,9 @@ const puppeteer = require('puppeteer');
         await page.goto('https://nic.eu.org/arf/en/');
       
         // 等待页面加载完成
-        await page.waitForSelector('id_handle');
-        await page.waitForSelector('id_password');
-        await page.waitForSelector('.action[type="submit"]');
-      
-        // 清空Handle输入框的默认值-FREE
+        await page.waitForTimeout(5000); // 增加等待时间，等待页面加载完全
+
+        // 清空Handle输入框的原有值-FREE
         await page.evaluate(() => {
           document.querySelector('#id_handle').value = '';
         });
