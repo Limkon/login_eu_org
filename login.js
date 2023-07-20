@@ -22,6 +22,11 @@ const puppeteer = require('puppeteer');
         await page.waitForSelector('#id_password');
         await page.waitForSelector('.action[type="submit"]');
       
+        // 清空Handle输入框的原有值-FREE
+        await page.evaluate(() => {
+          document.querySelector('#id_handle').value = '';
+        });
+
         // 输入用户名和密码
         await page.type('#id_handle', username);
         await page.type('#id_password', password);
