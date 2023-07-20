@@ -22,12 +22,12 @@ const puppeteer = require('puppeteer');
         await page.waitForSelector('#id_password');
         await page.waitForSelector('.action[type="submit"]');
       
-        // 清空Handle输入框的原有值-FREE
+        // 清空Handle输入框的默认值-FREE
         await page.evaluate(() => {
           document.querySelector('#id_handle').value = '';
         });
 
-        // 输入用户名和密码
+        // 输入实际的账号和密码
         await page.type('#id_handle', username);
         await page.type('#id_password', password);
       
@@ -36,8 +36,18 @@ const puppeteer = require('puppeteer');
       
         // 等待登录成功（如果有跳转页面的话）
         await page.waitForNavigation();
-        
-        console.log(`账号 ${username} 登录成功！`);
+
+        // 判断是否登录成功
+        const isLoggedIn = await page.evaluate(() => {
+          const loginButton = document.querySelector('.action[value="Login"]');
+          return loginButton === null;
+        });
+
+        if (isLoggedIn) {
+          console.log(`账号 ${username} 登录成功！`);
+        } else {
+          console.error(`账号 ${username} 登录失败，请检查账号和密码是否正确。`);
+        }
       } catch (error) {
         console.error(`账号 ${username} 登录时出现错误: ${error}`);
       } finally {
@@ -50,7 +60,7 @@ const puppeteer = require('puppeteer');
       }
     }
 
-    console.log('所有账号登录成功！');
+    console.log('所有账号登录完成！');
   } catch (error) {
     console.error(`登录时出现错误: ${error}`);
   } finally {
